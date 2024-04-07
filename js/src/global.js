@@ -5,7 +5,7 @@ import "slick-carousel";
 $(function() {
   initSliders();
   // currentDateTime();
-  weatherApi('London');
+  // weatherApi('London');
 
   $('#weather-search').on('keydown', function(event){
     if (event.keyCode === 13) {

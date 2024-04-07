@@ -27,12 +27,9 @@ $primary: #000000;
 $secondary:#F6A6DB;
 $tertiary: #9A82DF;
 $quaternary: #6852A6;
-$quinary: #A0525C;
-$senary: #FFDB97;
-$septenary: #F4F4F4;
-$octonary: #E0DEDE;
-$nonary: #000000;
-$denary:#000000;
+$quinary: #FFDB97;
+$senary: #F4F4F4;
+$septenary: #E0DEDE;
 $white: #FFFFFF;
 $theme-colors: (
   "primary": $primary,
@@ -42,9 +39,6 @@ $theme-colors: (
   "quinary": $quinary,
   "senary": $senary,
   "septenary": $septenary,
-  "octonary": $octonary,
-  "nonary": $nonary,
-  "denary": $denary,
   "white": $white,
 );
 
@@ -99,6 +93,7 @@ $spacers: (
 /* Typography                */
 /* ========================= */
 
+$font-awesome: "FontAwesome";
 $font-family-sans-serif: "Raleway";
 $font-size-base: 1.25rem;
 $line-height-base: 1.5;
