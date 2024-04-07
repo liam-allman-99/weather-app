@@ -31,6 +31,53 @@ body {
   background: linear-gradient(90deg, rgba(255,229,180,1) 0%, rgba(252,154,219,1) 68%, rgba(161,116,190,1) 100%);
 }
 
+// Each Variable BTN styles
+
+@each $label, $color in $theme-colors {
+  // Underline button
+  .btn-underline-#{$label} {
+    color: $color;
+    transition: $transition-base;
+    position: relative;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    background-color: transparent;
+    padding: 0 0;
+    border: none;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+
+    &.active:before {
+      bottom: 0;
+      opacity: 1;
+    }
+
+    &:before {
+      background-color: $color !important;
+      bottom: -4px;
+      content: "";
+      height: 1px;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      transition: $transition-base;
+      width: 100%;
+    }
+
+    &:hover {
+      color: $color;
+
+      &:before {
+        bottom: 0;
+        opacity: 1;
+      }
+    }
+  }
+} 
+
 // Header
 
 header {
