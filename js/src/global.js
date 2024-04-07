@@ -30,7 +30,7 @@ $(function() {
   });
 
   function weatherApi(location) {
-    let apiUrl = 'http://api.weatherapi.com/v1/forecast.json?key=8802ddfd2b994798b5d90805240704&q='+location+'&days=3&aqi=no&alerts=no';
+    let apiUrl = 'https://api.weatherapi.com/v1/forecast.json?key=8802ddfd2b994798b5d90805240704&q='+location+'&days=3&aqi=no&alerts=no';
 
     console.log(apiUrl);
 
