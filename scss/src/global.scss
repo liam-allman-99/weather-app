@@ -1,0 +1,30 @@
+// Importing variables file
+@import "modules/variables";
+
+// Importing NPM Packages Styles
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+@import "node_modules/slick-carousel/slick/slick.scss";
+
+// Import font file
+@import "fonts";
+
+// Importing mixins file
+@import "modules/mixins";
+
+// Global Style Setup
+
+html {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: absolute;
+  transition: transform 1000ms ease-in-out;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
