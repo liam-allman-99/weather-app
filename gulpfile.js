@@ -8,8 +8,8 @@ const sourcemaps = require('gulp-sourcemaps');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const browserify = require('browserify');
-const path = require('path');
 
+// Sets the paths of the files location and where the .min files should go in the repo
 const paths = {
   styles: {
     src: 'scss/src/*.scss',
@@ -20,10 +20,11 @@ const paths = {
     dest: 'js/dist/'
   },
   html: {
-    src: '*.html' // Assuming HTML files are in the root directory
+    src: '*.html'
   }
 };
 
+// function for compiling the SCSS in global.scss into a global.min.css file
 function styles() {
   return gulp.src(paths.styles.src)
     .pipe(sass().on('error', sass.logError))
@@ -31,46 +32,55 @@ function styles() {
     .pipe(rename({
       basename: 'global',
       suffix: '.min'
-    }))
-    .pipe(gulp.dest(paths.styles.dest));
+  }))
+
+  .pipe(gulp.dest(paths.styles.dest));
 }
 
+// function for compiling the jQuery in global.js into a global.min.js file
 function scripts() {
   return browserify({
-      entries: ['./js/src/global.js'], // Entry file(s)
-      debug: true // Generate source maps
-    })
-    .transform('babelify', { presets: ['@babel/preset-env'] }) // Transform ES6 code to ES5
-    .bundle() // Bundle all files
-    .pipe(source('global.min.js')) // Convert bundle stream to vinyl stream
-    .pipe(buffer()) // Convert to buffered vinyl stream for sourcemaps
-    .pipe(sourcemaps.init({ loadMaps: true })) // Initialize sourcemaps
-    .pipe(uglify()) // Minify JavaScript
-    .pipe(sourcemaps.write('./')) // Write sourcemaps
-    .pipe(gulp.dest(paths.scripts.dest)); // Output destination
+    // Grabs the directory of the main js file
+    entries: ['./js/src/global.js'],
+    debug: true
+  })
+
+  // Transform ES6 code to ES5
+  .transform('babelify', { presets: ['@babel/preset-env'] })
+  .bundle()
+  .pipe(source('global.min.js'))
+  .pipe(buffer())
+  .pipe(sourcemaps.init({ loadMaps: true }))
+  // Minify JavaScript
+  .pipe(uglify())
+  .pipe(sourcemaps.write('./'))
+  .pipe(gulp.dest(paths.scripts.dest));
 }
 
 function html() {
   return gulp.src(paths.html.src);
 }
 
+// Function to serve files from the root and use the index.html as the default
 function serve() {
   browserSync.init({
     server: {
-      baseDir: './', // Serve files from the root directory
-      index: 'index.html' // Use index.html as the default file
+      baseDir: './',
+      index: 'index.html'
     },
-    port: 3000 // Proxy port
+    port: 3000
   });
 
-  gulp.watch(paths.scripts.src, gulp.series(scripts, reload)); // Watch for changes in JS files
-  gulp.watch(paths.styles.src, gulp.series(styles, reload)); // Watch for changes in SCSS files
-  gulp.watch(paths.html.src, gulp.series(html, reload)); // Watch for changes in HTML files
+  // Watch for changes in JS, SCSS, and HTML files
+  gulp.watch(paths.scripts.src, gulp.series(scripts, reload));
+  gulp.watch(paths.styles.src, gulp.series(styles, reload));
+  gulp.watch(paths.html.src, gulp.series(html, reload));
 }
 
+// Reloads browser and signals completion fo the reload
 function reload(done) {
-  browserSync.reload(); // Reload the browser
-  done(); // Signal completion
+  browserSync.reload();
+  done();
 }
 
 const build = gulp.parallel(styles, scripts);

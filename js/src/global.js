@@ -130,8 +130,8 @@ $(function() {
           $('#' + tabContentId).append(hourlyContent);
 
           // Loop through forecastHourly for the current date
-          forecastHourly.forEach(function(hour, index) {
-            var hourlyTime = hour.time;
+          forecastHourly.forEach(function(hourlyData, index) {
+            var hourlyTime = hourlyData.time;
 
             // Parse the time string
             var timeObj = new Date(hourlyTime);
@@ -145,16 +145,16 @@ $(function() {
             // Determine if it's AM or PM
             var period;
             if (hour < 12) {
-                period = 'am';
+              period = 'am';
             } else {
-                period = 'pm';
+              period = 'pm';
             }
 
             // Convert the hour to 12-hour format
             if (hour === 0) {
-                hour = 12;
+              hour = 12;
             } else if (hour > 12) {
-                hour = hour - 12;
+              hour = hour - 12;
             }
 
             // Initialize an empty string to hold the formatted time
@@ -162,7 +162,7 @@ $(function() {
 
             // Check if the minute is less than 10 to add a leading zero
             if (minute < 10) {
-                formattedTime += '0';
+              formattedTime += '0';
             }
 
             // Append the minute to the formatted time
@@ -177,10 +177,42 @@ $(function() {
             $('#hour-tabs-' + forecastDate).append(hourlyButton);
 
             // Create tab content element for hourly details
-            var tabContentElementHourly = $('<div class="tab-pane fade" id="' + tabContentIdHourly + '" role="tabpanel" aria-labelledby="' + hourlyButtonId + '" tabindex="0"><p>Time: ' + formattedTime + ', Temperature: ' + hour.temp_c + '°C</p></div>');
+            var tabContentElementHourly = $('<div class="tab-pane fade" id="' + tabContentIdHourly + '" role="tabpanel" aria-labelledby="' + hourlyButtonId + '" tabindex="0">');
+
+            // "time": "2024-04-10 10:00",
+            // "temp_c": 9,
+            // "temp_f": 48.3,
+            // "condition": {
+            //   "text": "Light drizzle"
+            // },
+            // "wind_mph": 16.8,
+            // "wind_kph": 27,
+            // "wind_degree": 193,
+            // "wind_dir": "SSW",
+            // "pressure_mb": 1013,
+            // "pressure_in": 29.9,
+            // "humidity": 93,
+            // "cloud": 100,
+            // "feelslike_c": 5.5,
+            // "feelslike_f": 42,
+            // "windchill_c": 5.5,
+            // "windchill_f": 42,
+            // "will_it_rain": 1,
+            // "chance_of_rain": 100,
+            // "gust_mph": 24.6,
+            // "gust_kph": 39.6,
+            // "uv": 2
+
+            // Create a paragraph element with the desired content
+            var paragraphElement = $('<p class="my-6 text-white fw-bold">Time: ' + formattedTime + ', Temperature: ' + hourlyData.temp_c + '°C</p>');
+            
+            // Append the paragraph element to the tab content element
+            tabContentElementHourly.append(paragraphElement);           
 
             // Append the tab content element for hourly details to the corresponding hourly-content element
             $('#hourly-content-' + forecastDate).append(tabContentElementHourly);
+
+            // console.log(hourlyData);
           });
 
         });

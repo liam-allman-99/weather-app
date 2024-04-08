@@ -89,11 +89,14 @@ header {
 
     @include sm {
       width: 200px;
-      height: auto;
     }
 
     @include md {
-      width: auto;
+      width: 350px;
+    }
+
+    @include lg {
+      width: 500px;
     }
   }
 }
@@ -207,6 +210,20 @@ header {
     flex-wrap: nowrap;
     box-shadow: 0px 4px 4px 2px rgba($primary, 0.1);
 
+    // &::-webkit-scrollbar {
+    //   width: 10px;
+    // }
+
+    // &::-webkit-scrollbar-track {
+    //   background: $white;
+    //   border-radius: 12px;
+    // }
+    
+    // &::-webkit-scrollbar-thumb {
+    //   background: $quaternary;
+    //   border-radius: 12px;
+    // }
+
     button {
       padding: 0 .5rem;
       white-space: nowrap;
@@ -231,7 +248,15 @@ header {
         z-index: 2;
       }
 
+      &:last-child {
+        &::before {
+          display: none;
+        }
+      }
+
       &.active {
+        pointer-events: none;
+        
         p {
           background-color: $tertiary;
           color: $white;
@@ -240,7 +265,11 @@ header {
       }
 
       &:hover {
-        color: $quaternary;
+        p {
+          color: $quaternary;
+          padding: 0 .5rem;
+          background-color: $septenary;
+        }
       }
     }
   }
