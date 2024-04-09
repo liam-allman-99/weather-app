@@ -199,6 +199,11 @@ header {
   }
 }
 
+// Location title
+#weather-location {
+  text-transform: capitalize;
+}
+
 // #forecastContent modal content styles
 
 #forecastContent {

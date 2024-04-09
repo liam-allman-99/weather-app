@@ -32,8 +32,6 @@ $(function() {
   function weatherApi(location) {
     let apiUrl = 'https://api.weatherapi.com/v1/forecast.json?key=8802ddfd2b994798b5d90805240704&q='+location+'&days=3&aqi=no&alerts=no';
 
-    console.log(apiUrl);
-
     $.ajax({
       url: apiUrl,
       type: 'GET',
@@ -129,6 +127,8 @@ $(function() {
           $('#' + tabContentId).append(hourlyTabs);
           $('#' + tabContentId).append(hourlyContent);
 
+          var indexArray = [];
+
           // Loop through forecastHourly for the current date
           forecastHourly.forEach(function(hourlyData, index) {
             var hourlyTime = hourlyData.time;
@@ -168,51 +168,74 @@ $(function() {
             // Append the minute to the formatted time
             formattedTime += minute + ' ' + period;
 
-            var hourlyButtonId = tabId + '-' + index; // Unique ID for each button
-            var tabContentIdHourly = 'nav-' + forecastDate + '-' + index; // Unique ID for each tab content
+            // Get the current date and time
+            var currentDate = new Date();
 
-            var hourlyButton = $('<button class="nav-link" id="' + hourlyButtonId + '" type="button" data-bs-toggle="tab" data-bs-target="#' + tabContentIdHourly + '" role="tab" aria-controls="' + tabContentIdHourly + '" aria-selected="false"><p class="mb-0">' + formattedTime + '</button>');
+            // Get the current date and time in the format "YYYY-MM-DD HH:MM"
+            var currentDateString = currentDate.toISOString().slice(0, 16).replace('T', ' ');
 
-            // Append the button to the corresponding hour-tabs element
-            $('#hour-tabs-' + forecastDate).append(hourlyButton);
+            if (hourlyData.time >= currentDateString) {
+              indexArray.push(index);
 
-            // Create tab content element for hourly details
-            var tabContentElementHourly = $('<div class="tab-pane fade" id="' + tabContentIdHourly + '" role="tabpanel" aria-labelledby="' + hourlyButtonId + '" tabindex="0">');
+              // console.log(index);
+              if(index == indexArray[0]) {
+                // Sets the first loop tabs to be active and visible on ajax complete
+                var currentHourButton = 'active';
+                var currentHourTab = 'show active';
+              }
 
-            // "time": "2024-04-10 10:00",
-            // "temp_c": 9,
-            // "temp_f": 48.3,
-            // "condition": {
-            //   "text": "Light drizzle"
-            // },
-            // "wind_mph": 16.8,
-            // "wind_kph": 27,
-            // "wind_degree": 193,
-            // "wind_dir": "SSW",
-            // "pressure_mb": 1013,
-            // "pressure_in": 29.9,
-            // "humidity": 93,
-            // "cloud": 100,
-            // "feelslike_c": 5.5,
-            // "feelslike_f": 42,
-            // "windchill_c": 5.5,
-            // "windchill_f": 42,
-            // "will_it_rain": 1,
-            // "chance_of_rain": 100,
-            // "gust_mph": 24.6,
-            // "gust_kph": 39.6,
-            // "uv": 2
+              var hourlyButtonId = tabId + '-' + index; // Unique ID for each button
+              var tabContentIdHourly = 'nav-' + forecastDate + '-' + index; // Unique ID for each tab content
+  
+              var hourlyButton = $('<button class="nav-link '+ currentHourButton +'" id="' + hourlyButtonId + '" type="button" data-bs-toggle="tab" data-bs-target="#' + tabContentIdHourly + '" role="tab" aria-controls="' + tabContentIdHourly + '" aria-selected="false"><p class="mb-0">' + formattedTime + '</button>');
+  
+              // Append the button to the corresponding hour-tabs element
+              $('#hour-tabs-' + forecastDate).append(hourlyButton);
+  
+              // Create tab content element for hourly details
+              var tabContentElementHourly = $('<div class="tab-pane fade ' + currentHourTab + '" id="' + tabContentIdHourly + '" role="tabpanel" aria-labelledby="' + hourlyButtonId + '" tabindex="0">');
+  
+              // Create the inner modal content structure for the forecast output
+              var innerBlock = $('<div class="mt-6 bg-white p-6 d-flex flex-row flex-wrap"></div>');
+  
+              // Append the innerBlock to the modal content
+              tabContentElementHourly.append(innerBlock);
+  
+              // Append the forecast data to the tab content element
+              // Condition data
+              innerBlock.append('<div class="col-12 mb-6 mb-lg-8"><h5 class="mb-0">Condition - ' + hourlyData.condition.text + '</h5></div>');
 
-            // Create a paragraph element with the desired content
-            var paragraphElement = $('<p class="my-6 text-white fw-bold">Time: ' + formattedTime + ', Temperature: ' + hourlyData.temp_c + '°C</p>');
-            
-            // Append the paragraph element to the tab content element
-            tabContentElementHourly.append(paragraphElement);           
+              // array of labels and API data in a loop
+              var weatherData = [
+                { label: 'Temp C', data: hourlyData.temp_c, icon: '<i class="me-2 fa-solid fa-temperature-high"></i>' },
+                { label: 'Temp F', data: hourlyData.temp_f, icon: '<i class="me-2 fa-solid fa-temperature-high"></i>' },
+                { label: 'Wind MPH', data: hourlyData.wind_mph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
+                { label: 'Wind KPH', data: hourlyData.wind_kph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
+                { label: 'Wind Degree', data: hourlyData.wind_degree, icon: '<i class="me-2 fa-solid fa-compass"></i>' },
+                { label: 'Wind Direction', data: hourlyData.wind_dir, icon: '<i class="me-2 fa-solid fa-location-arrow"></i>' },
+                { label: 'Pressure MB', data: hourlyData.pressure_mb, icon: '<i class="me-2 fa-solid fa-gauge"></i>' },
+                { label: 'Pressure IN', data: hourlyData.pressure_in, icon: '<i class="me-2 fa-solid fa-gauge"></i>' },
+                { label: 'Humidity', data: hourlyData.humidity, icon: '<i class="me-2 fa-solid fa-droplet"></i>' },
+                { label: 'Cloud', data: hourlyData.cloud, icon: '<i class="me-2 fa-solid fa-cloud"></i>' },
+                { label: 'Feels Like C', data: hourlyData.feelslike_c, icon: '<i class="me-2 fa-solid fa-temperature-half"></i>' },
+                { label: 'Feels Like F', data: hourlyData.feelslike_f, icon: '<i class="me-2 fa-solid fa-temperature-half"></i>' },
+                { label: 'Wind Chill C', data: hourlyData.windchill_c, icon: '<i class="me-2 fa-solid fa-temperature-three-quarters"></i>' },
+                { label: 'Wind Chill F', data: hourlyData.windchill_f, icon: '<i class="me-2 fa-solid fa-temperature-three-quarters"></i>' },
+                { label: 'Will it Rain', data: hourlyData.will_it_rain, icon: '<i class="me-2 fa-solid fa-umbrella"></i>' },
+                { label: 'Chance of Rain', data: hourlyData.chance_of_rain, icon: '<i class="me-2 fa-solid fa-cloud-rain"></i>' },
+                { label: 'Gust MPH', data: hourlyData.gust_mph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
+                { label: 'Gust KPH', data: hourlyData.gust_kph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
+                { label: 'UV', data: hourlyData.uv, icon: '<i class="me-2 fa-solid fa-cloud-sun"></i>' }
+              ];
+
+              // Loop through the array and append the data to innerBlock
+              $.each(weatherData, function(index, item) {
+                innerBlock.append('<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-6"><p class="mb-0 text-quaternary">' + item.icon + '' + item.label + ' - ' + item.data + '</p></div>');
+              });
+            }
 
             // Append the tab content element for hourly details to the corresponding hourly-content element
             $('#hourly-content-' + forecastDate).append(tabContentElementHourly);
-
-            // console.log(hourlyData);
           });
 
         });
