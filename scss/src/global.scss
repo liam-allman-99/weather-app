@@ -82,14 +82,24 @@ body {
 
 header {
   box-shadow: 0px 4px 4px 2px rgba($primary, 0.1);
-  
-  img {
-    width: 100%;
-    height: auto;
+  background: $secondary;
+  background: linear-gradient(90deg, $quinary 0%, $secondary 68%, $tertiary 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: fixed;
+  transition: $transition-base;
+  padding: 1rem 0;
+  z-index: 9;
 
-    @include sm {
-      width: 200px;
-    }
+  @include lg {
+    padding: 2rem 0;
+  }
+
+  img {
+    width: 200px;
+    height: auto;
+    transition: $transition-base;
 
     @include md {
       width: 350px;
@@ -99,6 +109,35 @@ header {
       width: 500px;
     }
   }
+
+  #search-btn {
+    background-color: $quinary;
+    border: 1px solid $quinary;
+    border-radius: 8px;
+    color: $quaternary;
+    transition: $transition-base;
+
+    &:hover {
+      background-color: $white;
+      color: $tertiary;
+    }
+  }
+
+  &.scroll {
+    padding: .5rem 0;
+
+    img {      
+      @include sm {
+        width: 300px;
+      }
+    }
+  }
+}
+
+// Border Radius
+
+.rounded-border {
+  border-radius: 2rem;
 }
 
 // Search Container
@@ -134,6 +173,7 @@ header {
     width: 100%;
     color: $quaternary;
     min-width: 100%;
+    transition: $transition-base;
 
     @include sm {
       min-width: none;
@@ -178,9 +218,13 @@ header {
     color: $white;
     font-weight: 500;
     padding: 4px 12px;
-    min-width: 100px;
+    min-width: 85px;
     margin-right: .5rem;
     transition: $transition-base;
+
+    @include sm {
+      min-width: 100px;
+    }
 
     .date {
       font-size: 14px;
@@ -208,34 +252,25 @@ header {
 
 #forecastContent {
   .nav-tabs {
-    background-color: $white;
-    padding: 1rem .5rem;
+    background-color: transparent;
+    padding: 1rem 0;
     border-bottom: none;
     overflow: scroll hidden;
     flex-wrap: nowrap;
-    box-shadow: 0px 4px 4px 2px rgba($primary, 0.1);
-
-    // &::-webkit-scrollbar {
-    //   width: 10px;
-    // }
-
-    // &::-webkit-scrollbar-track {
-    //   background: $white;
-    //   border-radius: 12px;
-    // }
-    
-    // &::-webkit-scrollbar-thumb {
-    //   background: $quaternary;
-    //   border-radius: 12px;
-    // }
 
     button {
-      padding: 0 .5rem;
+      padding: 0 .5rem 0 0;
       white-space: nowrap;
       position: relative;
       transition: $transition-base;
       border: none;
       color: $primary;
+      background-color: transparent;
+      margin: 0 .5rem;
+
+      &:first-child {
+        margin: 0 .5rem 0 0;
+      }
       
       p {
         font-weight: 500;
@@ -273,9 +308,58 @@ header {
         p {
           color: $quaternary;
           padding: 0 .5rem;
-          background-color: $septenary;
+          background-color: $white;
         }
       }
     }
+  }
+
+  // Forecase Data
+
+  .forecast-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    i {
+      font-size: 1.525rem;
+      margin-bottom: .5rem;
+    }
+
+    .small-font {
+      font-size: .875rem;
+    }
+  }
+}
+
+// Select field styles
+.select-container {
+  position: relative;
+
+  &:before {
+    content: '\f078';
+    position: absolute;
+    font-family: $font-awesome;
+    top: calc(50% - 10px);
+    color: $quaternary;
+    right: 12px;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    pointer-events: none;
+  }
+  
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid $quaternary;
+    border-radius: 20px;
+    padding: 4px 40px 4px 12px;
+    width: 100%;
   }
 }

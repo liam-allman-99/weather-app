@@ -4,6 +4,40 @@ import "slick-carousel";
 
 $(function() {
   weatherApi('London');
+  headerFix();
+  scrollHeader();
+
+  // Calls the scrollHeader function on scroll of the window
+  $(window).on('scroll', function() {
+    scrollHeader();
+  });
+
+  // Fixes body position on window resize
+  $(window).on('resize', function() {
+    headerFix();
+  });
+
+  // Addign class to header on scroll
+  function scrollHeader() {
+    // Check if the scroll position is greater than 0
+    if ($(window).scrollTop() > 0) {
+      $('header').addClass('scroll');
+    } else {
+      $('header').removeClass('scroll');
+    }
+  }
+
+  // Fixing position of the header
+  function headerFix() {
+    let header = $("header");
+    let headerHeight = $(header).outerHeight();
+    $('body').css("margin-top", `${headerHeight}px`);
+  }
+
+  // Toggle the search bar on mobile
+  $('#search-btn').on('click', function(){
+    $('#search-field').toggleClass('d-none');
+  });
 
   // Search functionality on keydown
   $('#weather-search').on('keydown', function(event){
@@ -196,41 +230,40 @@ $(function() {
               var tabContentElementHourly = $('<div class="tab-pane fade ' + currentHourTab + '" id="' + tabContentIdHourly + '" role="tabpanel" aria-labelledby="' + hourlyButtonId + '" tabindex="0">');
   
               // Create the inner modal content structure for the forecast output
-              var innerBlock = $('<div class="mt-6 bg-white p-6 d-flex flex-row flex-wrap"></div>');
+              var innerBlock = $('<div class="mt-6 bg-white rounded-border p-6 d-flex flex-row flex-wrap"></div>');
   
               // Append the innerBlock to the modal content
               tabContentElementHourly.append(innerBlock);
   
               // Append the forecast data to the tab content element
               // Condition data
-              innerBlock.append('<div class="col-12 mb-6 mb-lg-8"><h5 class="mb-0">Condition - ' + hourlyData.condition.text + '</h5></div>');
+              innerBlock.append('<div class="col-12 mb-6 mb-lg-8 text-center"><h5 class="mb-0">Condition - ' + hourlyData.condition.text + '</h5></div>');
 
               // array of labels and API data in a loop
               var weatherData = [
-                { label: 'Temp C', data: hourlyData.temp_c, icon: '<i class="me-2 fa-solid fa-temperature-high"></i>' },
-                { label: 'Temp F', data: hourlyData.temp_f, icon: '<i class="me-2 fa-solid fa-temperature-high"></i>' },
-                { label: 'Wind MPH', data: hourlyData.wind_mph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
-                { label: 'Wind KPH', data: hourlyData.wind_kph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
-                { label: 'Wind Degree', data: hourlyData.wind_degree, icon: '<i class="me-2 fa-solid fa-compass"></i>' },
-                { label: 'Wind Direction', data: hourlyData.wind_dir, icon: '<i class="me-2 fa-solid fa-location-arrow"></i>' },
-                { label: 'Pressure MB', data: hourlyData.pressure_mb, icon: '<i class="me-2 fa-solid fa-gauge"></i>' },
-                { label: 'Pressure IN', data: hourlyData.pressure_in, icon: '<i class="me-2 fa-solid fa-gauge"></i>' },
-                { label: 'Humidity', data: hourlyData.humidity, icon: '<i class="me-2 fa-solid fa-droplet"></i>' },
-                { label: 'Cloud', data: hourlyData.cloud, icon: '<i class="me-2 fa-solid fa-cloud"></i>' },
-                { label: 'Feels Like C', data: hourlyData.feelslike_c, icon: '<i class="me-2 fa-solid fa-temperature-half"></i>' },
-                { label: 'Feels Like F', data: hourlyData.feelslike_f, icon: '<i class="me-2 fa-solid fa-temperature-half"></i>' },
-                { label: 'Wind Chill C', data: hourlyData.windchill_c, icon: '<i class="me-2 fa-solid fa-temperature-three-quarters"></i>' },
-                { label: 'Wind Chill F', data: hourlyData.windchill_f, icon: '<i class="me-2 fa-solid fa-temperature-three-quarters"></i>' },
-                { label: 'Will it Rain', data: hourlyData.will_it_rain, icon: '<i class="me-2 fa-solid fa-umbrella"></i>' },
-                { label: 'Chance of Rain', data: hourlyData.chance_of_rain, icon: '<i class="me-2 fa-solid fa-cloud-rain"></i>' },
-                { label: 'Gust MPH', data: hourlyData.gust_mph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
-                { label: 'Gust KPH', data: hourlyData.gust_kph, icon: '<i class="me-2 fa-solid fa-gauge-high"></i>' },
-                { label: 'UV', data: hourlyData.uv, icon: '<i class="me-2 fa-solid fa-cloud-sun"></i>' }
+                { label: 'Temp', data: hourlyData.temp_c + '&deg;C', class: 'forecast-data metric-values', icon: '<i class="fa-solid fa-temperature-high"></i>' },
+                { label: 'Temp', data: hourlyData.temp_f + '&deg;F', class: 'forecast-data imperial-values', icon: '<i class="fa-solid fa-temperature-high"></i>' },
+                { label: 'Wind', data: hourlyData.wind_mph + ' mph', class: 'forecast-data metric-values', icon: '<i class="fa-solid fa-gauge-high"></i>' },
+                { label: 'Wind', data: hourlyData.wind_kph + ' kph', class: 'forecast-data imperial-values', icon: '<i class="fa-solid fa-gauge-high"></i>' },
+                { label: 'Wind Degree', data: hourlyData.wind_degree + '&deg;', class: 'forecast-data', icon: '<i class="fa-solid fa-compass"></i>' },
+                { label: 'Wind Direction', data: hourlyData.wind_dir, class: 'forecast-data', icon: '<i class="fa-solid fa-location-arrow"></i>' },
+                { label: 'Pressure', data: hourlyData.pressure_mb + ' mb', class: 'forecast-data metric-values', icon: '<i class="fa-solid fa-gauge"></i>' },
+                { label: 'Pressure', data: hourlyData.pressure_in + ' in', class: 'forecast-data imperial-values', icon: '<i class="fa-solid fa-gauge"></i>' },
+                { label: 'Humidity', data: hourlyData.humidity + '%', class: 'forecast-data', icon: '<i class="fa-solid fa-droplet"></i>' },
+                { label: 'Cloud', data: hourlyData.cloud + '%', class: 'forecast-data', icon: '<i class="fa-solid fa-cloud"></i>' },
+                { label: 'Feels Like', data: hourlyData.feelslike_c + '&deg;C', class: 'forecast-data metric-values', icon: '<i class="fa-solid fa-temperature-half"></i>' },
+                { label: 'Feels Like', data: hourlyData.feelslike_f + '&deg;F', class: 'forecast-data imperial-values', icon: '<i class="fa-solid fa-temperature-half"></i>' },
+                { label: 'Wind Chill', data: hourlyData.windchill_c + '&deg;C', class: 'forecast-data metric-values', icon: '<i class="fa-solid fa-temperature-three-quarters"></i>' },
+                { label: 'Wind Chill', data: hourlyData.windchill_f + '&deg;F', class: 'forecast-data imperial-values', icon: '<i class="fa-solid fa-temperature-three-quarters"></i>' },
+                { label: 'Chance of Rain', data: hourlyData.chance_of_rain + '%', class: 'forecast-data', icon: '<i class="fa-solid fa-cloud-rain"></i>' },
+                { label: 'Gust', data: hourlyData.gust_mph + ' mph', class: 'forecast-data metric-values', icon: '<i class="fa-solid fa-gauge-high"></i>' },
+                { label: 'Gust', data: hourlyData.gust_kph + ' kph', class: 'forecast-data imperial-values', icon: '<i class="fa-solid fa-gauge-high"></i>' },
+                { label: 'UV', data: hourlyData.uv, class: 'forecast-data', icon: '<i class="fa-solid fa-cloud-sun"></i>' }
               ];
 
               // Loop through the array and append the data to innerBlock
               $.each(weatherData, function(index, item) {
-                innerBlock.append('<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-6"><p class="mb-0 text-quaternary">' + item.icon + '' + item.label + ' - ' + item.data + '</p></div>');
+                innerBlock.append('<div class="col-6 col-md-4 col-lg-3 mb-6 ' + item.class + '">' + item.icon + '<h5 class="mb-1 text-quaternary">' + item.data + '</h5><p class="mb-0 text-quaternary small-font">' + item.label + '</p></div>');
               });
             }
 
@@ -246,4 +279,22 @@ $(function() {
       }
     });
   }
+
+  // Hiding Imperial values on load
+  setTimeout(function(){
+    $('.imperial-values').addClass('d-none');
+  }, 100);
+
+  // Updating values on change of select
+  $('#unit-select').on('change', function(){
+    var selectedValue = $(this).val();
+
+    if (selectedValue == 'metric') {
+      $('.imperial-values').addClass('d-none');
+      $('.metric-values').removeClass('d-none');
+    } else if (selectedValue == 'imperial') {
+      $('.imperial-values').removeClass('d-none');
+      $('.metric-values').addClass('d-none');
+    }
+  });
 });
