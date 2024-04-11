@@ -13,7 +13,7 @@ Welcome to this API weather application. This README provides an overview of the
 
 ## Designs
 
-The application's has been designed using Figma, ensuring a visually appealing and structured user interface for both mobile and desktop users.
+The application has been designed using Figma, ensuring a visually appealing and structured user interface for both mobile and desktop users.
 
 Figma link - https://www.figma.com/file/b07pqXupnM1h9HWIMy8zJB/Weather-App-Wireframe?type=design&node-id=0%3A1&mode=design&t=Ug2HMzCFIvOhuNw9-1
 

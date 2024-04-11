@@ -143,11 +143,11 @@ $(function() {
           $('#forecastContent').append(tabContentElement);
 
           // Append sub tab system to the tabContent
-          var hourlyTabs = '<ul class="order-2 order-lg-2 col-12 col-lg-9 nav nav-tabs" id="hour-tabs-' + forecastDate + '" role="tablist"></ul>';
-          var scrollTabs = '<div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-end order-1 order-lg-2 col-12 col-lg-3"><p class="mb-0 text-quaternary me-2">Swipe to scroll</p><i class="text-quaternary fa-solid fa-arrow-right-long"></i></div>';
-          var hourlyContent = '<div class="order-3 col-12 tab-content" id="hourly-content-' + forecastDate + '"></div>';
-          $('#' + tabContentId).append(hourlyTabs);
+          var scrollTabs = '<div class="d-flex d-md-none flex-row align-items-center justify-content-center col-12"><p class="mb-0 text-quaternary me-2">Swipe to scroll</p><i class="text-quaternary fa-solid fa-arrow-right-long"></i></div>';
+          var hourlyTabs = '<ul class="col-12 nav nav-tabs" id="hour-tabs-' + forecastDate + '" role="tablist"></ul>';
+          var hourlyContent = '<div class="col-12 tab-content" id="hourly-content-' + forecastDate + '"></div>';
           $('#' + tabContentId).append(scrollTabs);
+          $('#' + tabContentId).append(hourlyTabs);
           $('#' + tabContentId).append(hourlyContent);
 
           var indexArray = [];
