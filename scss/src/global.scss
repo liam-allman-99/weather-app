@@ -134,6 +134,20 @@ header {
   }
 }
 
+// Forecast content 
+
+#forecast-content {
+  margin-top: 70.8px;
+
+  @include md {
+    margin-top: 99.9px;
+  }
+
+  @include lg {
+    margin-top: 161px;
+  }
+}
+
 // Border Radius
 
 .rounded-border {
@@ -275,6 +289,7 @@ header {
       p {
         font-weight: 500;
         transition: $transition-base;
+        border-radius: 12px;
       }
 
       &::before {
@@ -294,16 +309,6 @@ header {
         }
       }
 
-      &.active {
-        pointer-events: none;
-        
-        p {
-          background-color: $tertiary;
-          color: $white;
-          padding: 0 .5rem;
-        }
-      }
-
       &:hover {
         p {
           color: $quaternary;
@@ -311,7 +316,25 @@ header {
           background-color: $white;
         }
       }
+
+      &.active,
+      &:focus,
+      &:active {
+        p {
+          background-color: $tertiary;
+          color: $white;
+          padding: 0 .5rem;
+        }
+      }
+
+      &.active {
+        pointer-events: none;
+      }
     }
+  }
+
+  > .tab-pane.active {
+    display: flex !important;
   }
 
   // Forecase Data
@@ -320,46 +343,61 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 
     i {
-      font-size: 1.525rem;
+      font-size: 1.25rem;
       margin-bottom: .5rem;
+
+      @include md {
+        font-size: 1.525rem;
+      }
     }
 
     .small-font {
       font-size: .875rem;
     }
+
+    h5 {
+      font-size: 1.25rem;
+
+      @include md {
+        font-size: $h5-font-size;
+      }
+    }
   }
 }
 
-// Select field styles
-.select-container {
-  position: relative;
-
-  &:before {
-    content: '\f078';
-    position: absolute;
-    font-family: $font-awesome;
-    top: calc(50% - 10px);
-    color: $quaternary;
-    right: 12px;
-    font-size: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    width: 20px;
-    pointer-events: none;
-  }
+.unit-change {
+  // Select field styles
+  .select-container {
+    position: relative;
   
-  select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 1px solid $quaternary;
-    border-radius: 20px;
-    padding: 4px 40px 4px 12px;
-    width: 100%;
+    &:before {
+      content: '\f078';
+      position: absolute;
+      font-family: $font-awesome;
+      top: calc(50% - 10px);
+      color: $quaternary;
+      right: 12px;
+      font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 20px;
+      width: 20px;
+      pointer-events: none;
+    }
+    
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: 1px solid $quaternary;
+      border-radius: 20px;
+      padding: 4px 40px 4px 12px;
+      width: 100%;
+    }
   }
 }

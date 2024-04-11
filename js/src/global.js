@@ -4,17 +4,11 @@ import "slick-carousel";
 
 $(function() {
   weatherApi('London');
-  headerFix();
   scrollHeader();
 
   // Calls the scrollHeader function on scroll of the window
   $(window).on('scroll', function() {
     scrollHeader();
-  });
-
-  // Fixes body position on window resize
-  $(window).on('resize', function() {
-    headerFix();
   });
 
   // Addign class to header on scroll
@@ -25,13 +19,6 @@ $(function() {
     } else {
       $('header').removeClass('scroll');
     }
-  }
-
-  // Fixing position of the header
-  function headerFix() {
-    let header = $("header");
-    let headerHeight = $(header).outerHeight();
-    $('body').css("margin-top", `${headerHeight}px`);
   }
 
   // Toggle the search bar on mobile
@@ -150,15 +137,17 @@ $(function() {
           };
   
           // Create tab content element
-          var tabContentElement = $('<div class="tab-pane fade ' + firstTab + '" id="' + tabContentId + '" role="tabpanel" aria-labelledby="' + tabContentId + '" tabindex="0"></div>');
+          var tabContentElement = $('<div class="flex-row flex-wrap align-items-center tab-pane fade ' + firstTab + '" id="' + tabContentId + '" role="tabpanel" aria-labelledby="' + tabContentId + '" tabindex="0"></div>');
   
           // Append tab content element to the tab content area
           $('#forecastContent').append(tabContentElement);
 
           // Append sub tab system to the tabContent
-          var hourlyTabs = '<ul class="nav nav-tabs" id="hour-tabs-' + forecastDate + '" role="tablist"></ul>';
-          var hourlyContent = '<div class="tab-content" id="hourly-content-' + forecastDate + '"></div>';
+          var hourlyTabs = '<ul class="order-2 order-lg-2 col-12 col-lg-9 nav nav-tabs" id="hour-tabs-' + forecastDate + '" role="tablist"></ul>';
+          var scrollTabs = '<div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-end order-1 order-lg-2 col-12 col-lg-3"><p class="mb-0 text-quaternary me-2">Swipe to scroll</p><i class="text-quaternary fa-solid fa-arrow-right-long"></i></div>';
+          var hourlyContent = '<div class="order-3 col-12 tab-content" id="hourly-content-' + forecastDate + '"></div>';
           $('#' + tabContentId).append(hourlyTabs);
+          $('#' + tabContentId).append(scrollTabs);
           $('#' + tabContentId).append(hourlyContent);
 
           var indexArray = [];
@@ -230,14 +219,14 @@ $(function() {
               var tabContentElementHourly = $('<div class="tab-pane fade ' + currentHourTab + '" id="' + tabContentIdHourly + '" role="tabpanel" aria-labelledby="' + hourlyButtonId + '" tabindex="0">');
   
               // Create the inner modal content structure for the forecast output
-              var innerBlock = $('<div class="mt-6 bg-white rounded-border p-6 d-flex flex-row flex-wrap"></div>');
+              var innerBlock = $('<div class="mt-6 d-flex flex-row flex-wrap mx-lg-n4"></div>');
   
               // Append the innerBlock to the modal content
               tabContentElementHourly.append(innerBlock);
   
               // Append the forecast data to the tab content element
               // Condition data
-              innerBlock.append('<div class="col-12 mb-6 mb-lg-8 text-center"><h5 class="mb-0">Condition - ' + hourlyData.condition.text + '</h5></div>');
+              innerBlock.append('<div class="col-12 mb-6 mb-lg-8 text-center text-quaternary"><h5 class="mb-0">Condition - ' + hourlyData.condition.text + '</h5></div>');
 
               // array of labels and API data in a loop
               var weatherData = [
@@ -263,7 +252,7 @@ $(function() {
 
               // Loop through the array and append the data to innerBlock
               $.each(weatherData, function(index, item) {
-                innerBlock.append('<div class="col-6 col-md-4 col-lg-3 mb-6 ' + item.class + '">' + item.icon + '<h5 class="mb-1 text-quaternary">' + item.data + '</h5><p class="mb-0 text-quaternary small-font">' + item.label + '</p></div>');
+                innerBlock.append('<div class="col-6 col-md-4 col-lg-3 mb-6 px-2 px-lg-4 ' + item.class + '"><div class="d-flex flex-column flex-fill justify-content-center align-items-center bg-white rounded-border w-100 p-6">' + item.icon + '<h5 class="mb-1 text-quaternary">' + item.data + '</h5><p class="mb-0 text-quaternary small-font">' + item.label + '</p></div></div>');
               });
             }
 
