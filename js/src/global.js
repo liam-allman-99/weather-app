@@ -45,6 +45,9 @@ $(function() {
       // Call the weatherAPI for the data
       weatherApi(apiLocation);
 
+      // // Reset values to metric
+      // $('.imperial-values').addClass('d-none');
+
       // Prevents the page reload
       event.preventDefault();
     }
@@ -267,12 +270,13 @@ $(function() {
         console.error(xhr.responseText);
       }
     });
-  }
 
-  // Hiding Imperial values on load
-  setTimeout(function(){
-    $('.imperial-values').addClass('d-none');
-  }, 100);
+    // Hiding Imperial values on load
+    setTimeout(function(){
+      $('.imperial-values').addClass('d-none');
+      $('#unit-select').val('metric');
+    }, 250);
+  }
 
   // Updating values on change of select
   $('#unit-select').on('change', function(){
